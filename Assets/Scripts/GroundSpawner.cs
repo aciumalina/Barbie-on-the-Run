@@ -3,7 +3,7 @@ using UnityEngine;
 public class GroundSpawner : MonoBehaviour
 {
     [SerializeField] GameObject groundTile;
-    Vector3 nextSpawnPoint;
+    Vector3 nextSpawnPoint=new Vector3(0,0,-10);
     int numberOfGround = 15;
     void Start()
     {
@@ -17,6 +17,5 @@ public class GroundSpawner : MonoBehaviour
     {
         GameObject temp=Instantiate(groundTile, nextSpawnPoint, Quaternion.identity);
         nextSpawnPoint = temp.transform.GetChild(1).transform.position;
-
     }
 }

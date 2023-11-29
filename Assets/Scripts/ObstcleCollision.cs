@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ObstcleCollision : MonoBehaviour
 {
-    PlayerMovement playerMovement;
+    PlayerMove playerMovement;
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag=="Player")
         {
-            playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            playerMovement = collision.gameObject.GetComponent<PlayerMove>();
             playerMovement.Die();
         }
     }
