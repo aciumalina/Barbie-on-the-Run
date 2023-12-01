@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +23,8 @@ public class PlayerMove : MonoBehaviour
     int horizontalMoveIndex;
     Vector3 moveHorizontal;
     float xFinalPosition;
+    private Vector3 previousPosition;
+
 
 
     void Start()
@@ -51,8 +53,9 @@ public class PlayerMove : MonoBehaviour
         currentTime = 0;
         horizontalMoveIndex = 0;
         moveHorizontal = new Vector3(2.5f, 0, 0);
-        moveHorizontalDuration = 1.0f;
+        moveHorizontalDuration = 0.5f;
         isAlive = true;
+        previousPosition = transform.position;
 
     }
 
@@ -66,6 +69,7 @@ public class PlayerMove : MonoBehaviour
         MovePlayerZ();
         MovePlayerY();
         MovePlayerX();
+        previousPosition = transform.position;
     }
 
     void MovePlayerY()
@@ -77,9 +81,10 @@ public class PlayerMove : MonoBehaviour
         }
         else if (isJumping == true)
         {
+            float verticalMovement = transform.position.y - previousPosition.y;
             float height = GetComponent<Collider>().bounds.size.y;
             bool isGround = Physics.Raycast(transform.position, Vector3.down, (height / 2) + 0.1f, groundMask);
-            if (isGround == true)
+            if (isGround == true && verticalMovement<0)
             {
                 Debug.Log(1);
                 animator.SetBool("isGround", true);
@@ -90,6 +95,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if (isGrounded == true)
         {
+            Debug.Log(2);
             animator.SetBool("isGround", false);
             animator.SetBool("isMoving", true);
             isGrounded = false;
