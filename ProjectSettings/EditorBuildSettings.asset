@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoginScene.unity
     guid: f1c8941ec76d4684f83cb8cb3aa7acd9
+  - enabled: 1
+    path: Assets/Scenes/Choose Character.unity
+    guid: 92638de52135c8f43bb8f1dfdc761d90
   m_configObjects: {}

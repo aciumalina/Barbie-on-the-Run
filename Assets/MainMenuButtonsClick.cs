@@ -40,6 +40,11 @@ public class MainMenuButtonsClick : MonoBehaviour
         SceneManager.LoadScene("Main Menu");
     }
 
+    public void ChooseCharacter()
+    {
+        SceneManager.LoadScene("Choose Character");
+    }
+
     public void Start()
     {
         if (PlayerPrefs.GetString("username") != "")
