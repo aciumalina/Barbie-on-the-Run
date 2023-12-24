@@ -8,7 +8,7 @@ public class MainCameraMove : MonoBehaviour
     Vector3 offset;
     void Start()
     {
-        player = GameObject.Find("Runner");
+        player = GameObject.FindWithTag("Player");
         offset = transform.position - player.transform.position;
     }
 

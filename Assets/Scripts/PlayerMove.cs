@@ -24,6 +24,7 @@ public class PlayerMove : MonoBehaviour
     Vector3 moveHorizontal;
     float xFinalPosition;
     private Vector3 previousPosition;
+    AudioManager audioManager;
 
 
 
@@ -38,6 +39,7 @@ public class PlayerMove : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb=GetComponent<Rigidbody>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     void initialiseVariables()
@@ -86,7 +88,6 @@ public class PlayerMove : MonoBehaviour
             bool isGround = Physics.Raycast(transform.position, Vector3.down, (height / 2) + 0.1f, groundMask);
             if (isGround == true && verticalMovement<0)
             {
-                Debug.Log(1);
                 animator.SetBool("isGround", true);
                 animator.SetBool("Jumping", false);
                 isJumping = false;
@@ -95,7 +96,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if (isGrounded == true)
         {
-            Debug.Log(2);
+            audioManager.PlaySFX(audioManager.jumpClip);
             animator.SetBool("isGround", false);
             animator.SetBool("isMoving", true);
             isGrounded = false;
@@ -116,6 +117,7 @@ public class PlayerMove : MonoBehaviour
 
     void Jump()
     {
+        audioManager.soundsEffect.Stop();
         float height = GetComponent<Collider>().bounds.size.y;
         bool isGround = Physics.Raycast(transform.position, Vector3.down, (height / 2) + 0.1f, groundMask);
         if (isGround)
@@ -140,20 +142,25 @@ public class PlayerMove : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            audioManager.soundsEffect.Stop();
             horizontalMoveIndex = 1;
             xFinalPosition = transform.position.x + moveHorizontal.x * (-1);
-            Debug.Log(xFinalPosition);
 
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            audioManager.soundsEffect.Stop();
             horizontalMoveIndex = 2;
             xFinalPosition = transform.position.x + moveHorizontal.x;
-            Debug.Log(xFinalPosition);
         }
     }
     void MoveLeftRight(Vector3 moveHorizontal)
     {
+        if (transform.position.x>2.7 || transform.position.x<-2.7)
+        {
+            animator.SetBool("isAlive", true);
+            Die();
+        }
         if (currentTime < moveHorizontalDuration)
         {
             transform.position = transform.position + moveHorizontal / (moveHorizontalDuration / Time.deltaTime);
@@ -167,11 +174,13 @@ public class PlayerMove : MonoBehaviour
             currentTime = 0;
             horizontalMoveIndex = 0;
             animator.SetBool("LeftRight", false);
+            audioManager.RestartRunning();
         }
     }
 
     public void Die()
     {
+        audioManager.soundsEffect.Stop();
         isAlive = false;
         animator.SetBool("isAlive", false);
         animator.SetFloat("RunSpeed", 0);
