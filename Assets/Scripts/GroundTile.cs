@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GroundTile : MonoBehaviour
@@ -11,8 +12,6 @@ public class GroundTile : MonoBehaviour
     private void Start()
     {
         groundSpawner= GameObject.FindAnyObjectByType<GroundSpawner>();
-        SpawnObstacle();
-        SpawnCoins();
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -22,16 +21,31 @@ public class GroundTile : MonoBehaviour
             Destroy(gameObject, 5);
         }
     }
-    void SpawnObstacle()
+    public void SpawnObstacle()
     {
-        int obstacleSpawnIndex = Random.Range(2, 5);
-        Transform spawnPoint= transform.GetChild(obstacleSpawnIndex).transform;
-        Instantiate(obstaclePrefab, spawnPoint.position,Quaternion.identity, transform);
+        int[] random_numbers = RandNumber(1, 1, 9);
+        foreach (int number in random_numbers) {
+            Transform spawnPoint = transform.GetChild(number).transform;
+            Instantiate(obstaclePrefab, spawnPoint.position, Quaternion.identity, transform);
+        }
     }
-
-    void SpawnCoins()
+    int[] RandNumber(int nr, int min, int max)
     {
-        int coinsToSpawn = 10;
+        HashSet<int> generatedNumbers = new HashSet<int>();
+        for (int i = 0; i < 5; i++)
+        {
+            int randomNumber = UnityEngine.Random.Range(1, 10);
+            if (!generatedNumbers.Contains(randomNumber))
+            {
+                generatedNumbers.Add(randomNumber);
+            }
+        }
+        int[] randomNumbers = generatedNumbers.ToArray();
+        return randomNumbers;
+    }
+    public void SpawnCoins()
+    {
+        int coinsToSpawn = 7;
         for(int i=0;i< coinsToSpawn;i++)
         {
             GameObject temp = Instantiate(coinPrefab,transform);
@@ -41,9 +55,9 @@ public class GroundTile : MonoBehaviour
     Vector3 GetRandomPointInCollider( Collider collider)
     {
         Vector3 point = new Vector3(
-                Random.Range(collider.bounds.min.x, collider.bounds.max.x),
-                Random.Range(collider.bounds.min.y, collider.bounds.max.y),
-                Random.Range(collider.bounds.min.z, collider.bounds.max.z)
+                UnityEngine.Random.Range(collider.bounds.min.x, collider.bounds.max.x),
+                UnityEngine.Random.Range(collider.bounds.min.y, collider.bounds.max.y),
+                UnityEngine.Random.Range(collider.bounds.min.z, collider.bounds.max.z)
             );
 
         if(point != collider.ClosestPoint(point))
