@@ -1,12 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AddCharacter : MonoBehaviour
 {
+    
     [SerializeField] GameObject zombie;
     [SerializeField] GameObject archer;
     [SerializeField] GameObject heraklios;
@@ -16,10 +18,19 @@ public class AddCharacter : MonoBehaviour
     GameObject character;
     void Awake()
     {
-        character = Instantiate(survivor);
+        if (StaticClass.selectedCaracter == null)
+        {
+            character = Instantiate(survivor);
+        }
+        else
+        {
+            character = Instantiate(StaticClass.selectedCaracter);
+        }
         ImportantSettings();
         AdditionalSettings();
         AddPointLight();
+
+        DontDestroyOnLoad(gameObject);
     }
     void ImportantSettings()
     {
@@ -47,4 +58,5 @@ public class AddCharacter : MonoBehaviour
         GameObject pointLightGameObject = GameObject.Instantiate(pointLight);
         pointLightGameObject.transform.parent= character.transform;
     }
+
 }
