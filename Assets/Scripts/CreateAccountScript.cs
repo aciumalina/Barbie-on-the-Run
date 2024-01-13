@@ -11,6 +11,7 @@ public class CreateAccountScript : MonoBehaviour
     public InputField emailInput;
     public InputField passwordInput;
     public InputField usernameInput;
+    public Button backButton;
     public Text feedbackText;
     public void CreateAccount()
     {
@@ -64,5 +65,10 @@ public class CreateAccountScript : MonoBehaviour
     {
         // Verifica daca parola este suficient de puternica
         return (Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*\d).+$") & password.Length >= 8);
+    }
+
+    public void backToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }

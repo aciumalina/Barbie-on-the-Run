@@ -7,6 +7,7 @@ public class LoginScript : MonoBehaviour
 {
     public InputField emailInput;
     public InputField passwordInput;
+    public Button backButton;
     public Text feedbackText;
     
     public void login()
@@ -32,5 +33,9 @@ public class LoginScript : MonoBehaviour
             Thread.Sleep(2000);
             SceneManager.LoadScene("Main Menu");
         }
+    }
+    public void backToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 }
